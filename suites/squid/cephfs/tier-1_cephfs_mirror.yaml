@@ -172,6 +172,24 @@ tests:
         destroy-cluster: false
         module: test_client.py
         name: "configure client"
+  -
+    test:
+      abort-on-fail: false
+      desc: "Enable ceph debug logs"
+      module: cephfs_logs_util.py
+      name: cephfs-enable-logs
+      clusters:
+        ceph1:
+          config:
+            ENABLE_LOGS : 1
+            daemon_list : ['mds','client']
+            daemon_dbg_level : {'mds':10,'client':10}
+        ceph2:
+          config:
+            ENABLE_LOGS : 1
+            daemon_list : ['mds','client']
+            daemon_dbg_level : {'mds':10,'client':10}
+  
   - test:
       abort-on-fail: false
       desc: "Configure CephFS Mirroring"
@@ -272,3 +290,18 @@ tests:
       module: cephfs_mirroring.test_cephfs_mirroring_with_snap_schedule.py
       name: Validate snapshot synchronisation using SnapSchedul
       polarion-id: "CEPH-83598968"
+  -
+    test:
+      abort-on-fail: false
+      desc: "Disable ceph debug logs"
+      module: cephfs_logs_util.py
+      name: cephfs-disable-logs
+      clusters:
+        ceph1:
+          config:
+            DISABLE_LOGS : 1
+            daemon_list : ['mds','client']
+        ceph2:
+          config:
+            DISABLE_LOGS : 1
+            daemon_list : ['mds','client']
